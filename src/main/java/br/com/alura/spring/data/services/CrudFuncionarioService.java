@@ -66,21 +66,26 @@ public class CrudFuncionarioService {
 
 
     private void atualizar(Scanner scan) {
+        visualizar();
+        Optional<Cargo> cargo;
         System.out.println("Digite o id");
         Long id = scan.nextLong();
 
         System.out.println("Digite o nome");
-        String nome = scan.next();
+        scan.nextLine();
+        String nome = scan.nextLine();
 
         System.out.println("Digite o cpf");
-        String cpf = scan.next();
+        String cpf = scan.nextLine();
 
         System.out.println("Digite o salario");
         Double salario = scan.nextDouble();
 
-        System.out.println("Digite a data de contracao");
-        String dataContratacao = scan.next();
+        System.out.println("Digite a data de contratação");
+        scan.nextLine();
+        String dataContratacao = scan.nextLine();
 
+        visualizarCargos();
         System.out.println("Digite o cargoId");
         Long cargoId = scan.nextLong();
 
@@ -90,14 +95,28 @@ public class CrudFuncionarioService {
         funcionario.setCpf(cpf);
         funcionario.setSalario(salario);
         funcionario.setDataContratacao(LocalDate.parse(dataContratacao, formatter));
-        Optional<Cargo> cargo = repositoryCargo.findById(cargoId);
-        funcionario.setCargo(cargo.get());
-
+        while (true){
+            cargo = repositoryCargo.findById(cargoId);
+            if (cargo.isPresent()){
+                funcionario.setCargo(cargo.get());
+                break;
+            }else{
+                System.out.println("Cargo invalido digite id correto");
+                visualizarCargos();
+                cargoId = scan.nextLong();
+            }
+        }
         repositoryFuncionario.save(funcionario);
         System.out.println("Alterado");
     }
 
+    private void visualizarCargos(){
+        List<Cargo> cargos = (List<Cargo>) repositoryCargo.findAll();
+        cargos.forEach(System.out::println);
+    }
+
     private void remover(Scanner scan) {
+        visualizar();
         System.out.println("Id");
         Long id = scan.nextLong();
         repositoryFuncionario.deleteById(id);
@@ -106,17 +125,20 @@ public class CrudFuncionarioService {
 
     private void cadastrar(Scanner scan) {
         System.out.println("Digite o nome");
-        String nome = scan.next();
+        scan.nextLine();
+        String nome = scan.nextLine();;
 
         System.out.println("Digite o cpf");
-        String cpf = scan.next();
+        String cpf = scan.nextLine();;
 
         System.out.println("Digite o salario");
         Double salario = scan.nextDouble();
 
-        System.out.println("Digite a data de contracao");
-        String dataContratacao = scan.next();
+        System.out.println("Digite a data de contratação");
+        scan.nextLine();
+        String dataContratacao = scan.nextLine();
 
+        visualizarCargos();
         System.out.println("Digite o cargoId");
         Long cargoId = scan.nextLong();
 
@@ -127,17 +149,31 @@ public class CrudFuncionarioService {
         funcionario.setCpf(cpf);
         funcionario.setSalario(salario);
         funcionario.setDataContratacao(LocalDate.parse(dataContratacao, formatter));
-        Optional<Cargo> cargo = repositoryCargo.findById(cargoId);
-        funcionario.setCargo(cargo.get());
+        Optional<Cargo> cargo;
+        while (true){
+            cargo = repositoryCargo.findById(cargoId);
+            if (cargo.isPresent()){
+                funcionario.setCargo(cargo.get());
+                break;
+            }else{
+                System.out.println("Cargo invalido digite id correto");
+                visualizarCargos();
+                cargoId = scan.nextLong();
+            }
+        }
         funcionario.setUnidadeTrabalhos(unidades);
 
         repositoryFuncionario.save(funcionario);
-        System.out.println("Salvo");
+        System.out.println("Salvo Com sucesso");
     }
+
+
 
     private List<UnidadeTrabalho> unidade(Scanner scan) {
         Boolean isTrue = true;
         List<UnidadeTrabalho> unidades = new ArrayList<>();
+        List<UnidadeTrabalho> unidadesExistentes = (List<UnidadeTrabalho>) repositoryUnidadeDeTRabalho.findAll();
+        unidadesExistentes.forEach(System.out::println);
 
         while (isTrue) {
             System.out.println("Digite o unidadeId (Para sair digite 0)");
@@ -145,7 +181,9 @@ public class CrudFuncionarioService {
 
             if (unidadeId != 0) {
                 Optional<UnidadeTrabalho> unidade = repositoryUnidadeDeTRabalho.findById(unidadeId);
-                unidades.add(unidade.get());
+                unidade.ifPresent(unidades::add);
+                if (unidade.isEmpty()) System.out.println("Id invalido");
+
             } else {
                 isTrue = false;
             }

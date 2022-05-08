@@ -2,6 +2,7 @@ package br.com.alura.spring.data;
 
 import br.com.alura.spring.data.services.CrudCargoService;
 import br.com.alura.spring.data.services.CrudFuncionarioService;
+import br.com.alura.spring.data.services.CrudRelatorioService;
 import br.com.alura.spring.data.services.CrudUnidadeDeTrabalhoService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,11 +16,13 @@ public class SpringDataApplication implements CommandLineRunner {
 	private final CrudCargoService crudCargoService;
 	private final CrudFuncionarioService crudFuncionarioService;
 	private final CrudUnidadeDeTrabalhoService crudUnidadeDeTrabalhoService;
+	private final CrudRelatorioService crudRelatorioService;
 
-	public SpringDataApplication(CrudCargoService cargoService, CrudFuncionarioService crudFuncionarioService, CrudUnidadeDeTrabalhoService crudUnidadeDeTrabalhoService) {
+	public SpringDataApplication(CrudCargoService cargoService, CrudFuncionarioService crudFuncionarioService, CrudUnidadeDeTrabalhoService crudUnidadeDeTrabalhoService, CrudRelatorioService crudRelatorioService) {
 		this.crudCargoService = cargoService;
 		this.crudFuncionarioService = crudFuncionarioService;
 		this.crudUnidadeDeTrabalhoService = crudUnidadeDeTrabalhoService;
+		this.crudRelatorioService = crudRelatorioService;
 	}
 
 	public static void main(String[] args) {
@@ -36,6 +39,7 @@ public class SpringDataApplication implements CommandLineRunner {
 			System.out.println("1 - Ir para Cargos");
 			System.out.println("2 - Ir para Unidades de trabalho");
 			System.out.println("3 - Ir para Funcionarios");
+			System.out.println("4 - Relatorios");
 
 			int acao = sc.nextInt();
 
@@ -50,6 +54,9 @@ public class SpringDataApplication implements CommandLineRunner {
 					break;
 				case 3:
 					crudFuncionarioService.inicial(sc);
+					break;
+				case 4:
+					crudRelatorioService.inicial(sc);
 					break;
 
 			}

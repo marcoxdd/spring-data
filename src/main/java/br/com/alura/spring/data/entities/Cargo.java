@@ -1,5 +1,7 @@
 package br.com.alura.spring.data.entities;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,8 @@ import java.util.List;
 @Table(name = "cargos")
 public class Cargo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
     private String descricao;
     @OneToMany(mappedBy = "cargo")

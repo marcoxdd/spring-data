@@ -1,5 +1,7 @@
 package br.com.alura.spring.data.entities;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,8 @@ import java.util.List;
 @Table(name = "unidade_trabalho")
 public class UnidadeTrabalho {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
     private String descricao;
     private String endereco;
@@ -61,8 +64,11 @@ public class UnidadeTrabalho {
 
     @Override
     public String toString() {
-        return "Unidades: " + "id:" + id +
-                "| descricao:" + descricao +
-                "| endereco:" + endereco;
+        return "UnidadeTrabalho{" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", funcionarios=" + funcionarios +
+                '}';
     }
 }

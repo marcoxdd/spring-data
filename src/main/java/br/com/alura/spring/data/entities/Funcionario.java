@@ -2,6 +2,7 @@ package br.com.alura.spring.data.entities;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +15,8 @@ import java.util.List;
 @Table(name = "funcionarios")
 public class Funcionario {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
     private String nome;
     private String cpf;
@@ -100,7 +102,13 @@ public class Funcionario {
 
     @Override
     public String toString() {
-        return "Funcionario: " + "id:" + id + "| nome:'" + nome + "| cpf:" + cpf + "| salario:" + salario
-                + "| dataContratacao:" + dataContratacao + "| cargo:" + cargo.getDescricao();
+        return "Funcionario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", salario=" + salario +
+                ", dataContratacao=" + dataContratacao +
+                ", cargo=" + cargo +
+                '}';
     }
 }

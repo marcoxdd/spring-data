@@ -48,7 +48,8 @@ public class CrudCargoService {
 
     private void salvar(Scanner scan){
         System.out.println("Descrição do Cargo");
-        String descricao = scan.next();
+        scan.nextLine();
+        String descricao = scan.nextLine();
         Cargo cargo = new Cargo();
         cargo.setDescricao(descricao);
         cargoRepository.save(cargo);
@@ -67,7 +68,8 @@ public class CrudCargoService {
             Long id = scan.nextLong();
             System.out.println("Informe a nova Descrição: ");
             //Maneira um de lidar com null pointer
-            getCargos().stream().filter(c -> c.getId() == id).findFirst().orElseThrow(Exception::new).setDescricao(scan.next());
+            scan.nextLine();
+            getCargos().stream().filter(c -> c.getId() == id).findFirst().orElseThrow(Exception::new).setDescricao(scan.nextLine());
             cargoRepository.saveAll(getCargos());
             System.out.println("Atualizado com Sucesso!!");
         }catch (Exception ex){
