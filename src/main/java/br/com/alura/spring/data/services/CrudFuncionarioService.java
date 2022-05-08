@@ -6,6 +6,10 @@ import br.com.alura.spring.data.entities.UnidadeTrabalho;
 import br.com.alura.spring.data.repository.CargoRepository;
 import br.com.alura.spring.data.repository.FuncionarioRepository;
 import br.com.alura.spring.data.repository.UnidadeDeTrabalhoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -49,7 +53,7 @@ public class CrudFuncionarioService {
                 atualizar(scan);
                 break;
             case 3:
-                visualizar();
+                visualizar(scan);
                 break;
             case 4:
                 remover(scan);
@@ -59,14 +63,28 @@ public class CrudFuncionarioService {
 
     }
 
-    private void visualizar() {
-        Iterable<Funcionario> funcionarios = repositoryFuncionario.findAll();
-        funcionarios.forEach(System.out::println);
+    private void visualizar(Scanner scan) {
+        boolean continua = true;
+        while (continua){
+            System.out.println("Qual pagina deseja visualizar?");
+            int page = scan.nextInt() -1;
+            Pageable pageable = PageRequest.of(page, 5, Sort.unsorted());
+            Page<Funcionario> funcionarios = repositoryFuncionario.findAll(pageable);
+            System.out.println(funcionarios);
+            System.out.println("Pagina atual: " + funcionarios.getNumber());
+            System.out.println("Numero de itens total: " + funcionarios.getTotalElements());
+            funcionarios.forEach(System.out::println);
+            System.out.println("Deseja ver outra pagina? S/N");
+            String proxima = scan.next();
+            continua = proxima.equalsIgnoreCase("S");
+        }
     }
 
 
+
+
     private void atualizar(Scanner scan) {
-        visualizar();
+        visualizar(scan);
         Optional<Cargo> cargo;
         System.out.println("Digite o id");
         Long id = scan.nextLong();
@@ -116,7 +134,7 @@ public class CrudFuncionarioService {
     }
 
     private void remover(Scanner scan) {
-        visualizar();
+        visualizar(scan);
         System.out.println("Id");
         Long id = scan.nextLong();
         repositoryFuncionario.deleteById(id);
