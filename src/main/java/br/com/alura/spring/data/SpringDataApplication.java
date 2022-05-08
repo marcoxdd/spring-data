@@ -1,6 +1,8 @@
 package br.com.alura.spring.data;
 
 import br.com.alura.spring.data.services.CrudCargoService;
+import br.com.alura.spring.data.services.CrudFuncionarioService;
+import br.com.alura.spring.data.services.CrudUnidadeDeTrabalhoService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,10 +12,14 @@ import java.util.Scanner;
 @SpringBootApplication
 public class SpringDataApplication implements CommandLineRunner {
 
-	private final CrudCargoService cargoService;
+	private final CrudCargoService crudCargoService;
+	private final CrudFuncionarioService crudFuncionarioService;
+	private final CrudUnidadeDeTrabalhoService crudUnidadeDeTrabalhoService;
 
-	public SpringDataApplication(CrudCargoService cargoService) {
-		this.cargoService = cargoService;
+	public SpringDataApplication(CrudCargoService cargoService, CrudFuncionarioService crudFuncionarioService, CrudUnidadeDeTrabalhoService crudUnidadeDeTrabalhoService) {
+		this.crudCargoService = cargoService;
+		this.crudFuncionarioService = crudFuncionarioService;
+		this.crudUnidadeDeTrabalhoService = crudUnidadeDeTrabalhoService;
 	}
 
 	public static void main(String[] args) {
@@ -27,17 +33,25 @@ public class SpringDataApplication implements CommandLineRunner {
 		while (true){
 			System.out.println("Qual opção deseja executar? ");
 			System.out.println("0 - Sair");
-			System.out.println("1 - Cadastrar");
-			System.out.println("2 - Atualizar");
-			System.out.println("3 - Remover");
+			System.out.println("1 - Ir para Cargos");
+			System.out.println("2 - Ir para Unidades de trabalho");
+			System.out.println("3 - Ir para Funcionarios");
 
-			Integer acao = sc.nextInt();
+			int acao = sc.nextInt();
 
-			if (acao != 0){
-				System.out.println("Informe a descrição do cargo: ");
-				cargoService.inicial(sc, acao);
-			}else{
-				break;
+			if (acao == 0) break;
+
+			switch (acao){
+				case 1:
+					crudCargoService.inicial(sc);
+					break;
+				case 2:
+					crudUnidadeDeTrabalhoService.inicial(sc);
+					break;
+				case 3:
+					crudFuncionarioService.inicial(sc);
+					break;
+
 			}
 
 
